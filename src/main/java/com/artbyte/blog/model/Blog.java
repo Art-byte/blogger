@@ -13,23 +13,20 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "users")
-public class User {
+@Document(collection = "blogs")
+public class Blog {
 
     @Id
     private String id;
-    private String username;
-    private String password;
-    private String email;
-    private String name;
-    private String lastName;
-    private String status;
+    private String title;
+    private String content;
+    private List<String> files;
+    private Long likes;
+    private Long share;
+    @DBRef
+    private Comment comments;
     private Instant createAt;
-    private List<String> socialMedia;
-
-    @DBRef
-    private List<Blog> blogsCreated;
-    @DBRef
-    private List<Blog> blogsLiked;
 
 }
+
+

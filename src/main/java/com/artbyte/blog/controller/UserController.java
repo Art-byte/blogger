@@ -1,36 +1,57 @@
 package com.artbyte.blog.controller;
 
+import com.artbyte.blog.exception.UserException;
 import com.artbyte.blog.model.User;
 import com.artbyte.blog.repository.UserRepository;
+import com.artbyte.blog.service.impl.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/blogs")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserRepository userRepository){
-        this.userRepository = userRepository;
+    public UserController(UserService userService){
+        this.userService = userService;
     }
 
-    @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers(){
         try{
-            User userCreated = userRepository.save(user);
-            logger.info("Usuario creado exitosamente");
-            return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
-        } catch (Exception e){
-            logger.error("Error desconocido => {}", e.getCause());
+            List<User> userList = userService.getAllUsers();
+            if(userList.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            logger.info("User list => {}", userList);
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            logger.error("Error connecting to the database => {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/users")
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        try {
+            userService.createUser(user);
+            logger.info("User created successfully");
+            return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
+        } catch (UserException e) {
+            logger.error("Error: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            logger.error("Unexpected error: {}", e.getMessage());
+            return new ResponseEntity<>("Unexpected error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
