@@ -26,6 +26,7 @@ public class Blog {
     @DBRef
     private Comment comments;
     private Instant createAt;
+    private String status;
 
 }
 

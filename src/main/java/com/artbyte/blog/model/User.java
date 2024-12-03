@@ -31,5 +31,7 @@ public class User {
     private List<Blog> blogsCreated;
     @DBRef
     private List<Blog> blogsLiked;
+    @DBRef
+    private List<Blog> blogsShared;
 
 }
