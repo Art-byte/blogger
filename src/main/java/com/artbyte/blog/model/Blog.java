@@ -15,19 +15,17 @@ import java.util.List;
 @NoArgsConstructor
 @Document(collection = "blogs")
 public class Blog {
-
     @Id
     private String id;
     private String title;
     private String content;
-    private List<String> files;
+    private Long comments;
     private Long likes;
-    private Long share;
-    @DBRef
-    private Comment comments;
+    private Long shares;
+    private List<String> files;
     private Instant createAt;
     private String status;
-
+    private String authorId;
 }
 
 

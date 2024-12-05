@@ -11,4 +11,7 @@ public interface UserService {
     User updateUser(String id, User user);
     void createUser(User user);
     void deleteUser(String id);
+
+    interface BlogService {
+    }
 }

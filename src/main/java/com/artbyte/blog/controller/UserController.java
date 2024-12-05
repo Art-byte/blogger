@@ -2,7 +2,6 @@ package com.artbyte.blog.controller;
 
 import com.artbyte.blog.exception.UserException;
 import com.artbyte.blog.model.User;
-import com.artbyte.blog.repository.UserRepository;
 import com.artbyte.blog.service.impl.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

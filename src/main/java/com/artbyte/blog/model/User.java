@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @Document(collection = "users")
 public class User {
-
     @Id
     private String id;
     private String username;
@@ -26,12 +25,4 @@ public class User {
     private String status;
     private Instant createAt;
     private List<String> socialMedia;
-
-    @DBRef
-    private List<Blog> blogsCreated;
-    @DBRef
-    private List<Blog> blogsLiked;
-    @DBRef
-    private List<Blog> blogsShared;
-
 }
