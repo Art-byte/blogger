@@ -1,9 +1,9 @@
-package com.artbyte.blog.service.impl.impl;
+package com.artbyte.blog.service.impl;
 
 import com.artbyte.blog.exception.CommentException;
 import com.artbyte.blog.model.Comment;
 import com.artbyte.blog.repository.CommentRepository;
-import com.artbyte.blog.service.impl.CommentService;
+import com.artbyte.blog.service.CommentService;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;

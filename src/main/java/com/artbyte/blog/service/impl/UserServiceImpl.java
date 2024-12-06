@@ -1,10 +1,10 @@
-package com.artbyte.blog.service.impl.impl;
+package com.artbyte.blog.service.impl;
 
 import com.artbyte.blog.enums.StatusSystem;
 import com.artbyte.blog.exception.UserException;
 import com.artbyte.blog.model.User;
 import com.artbyte.blog.repository.UserRepository;
-import com.artbyte.blog.service.impl.UserService;
+import com.artbyte.blog.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

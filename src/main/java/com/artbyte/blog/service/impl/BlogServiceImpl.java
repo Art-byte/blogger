@@ -1,12 +1,10 @@
-package com.artbyte.blog.service.impl.impl;
+package com.artbyte.blog.service.impl;
 
 import com.artbyte.blog.enums.BlogsEnum;
 import com.artbyte.blog.exception.BlogException;
 import com.artbyte.blog.model.Blog;
 import com.artbyte.blog.repository.BlogRepository;
-import com.artbyte.blog.service.impl.BlogService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.artbyte.blog.service.BlogService;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -16,7 +14,6 @@ import java.util.List;
 public class BlogServiceImpl implements BlogService {
 
     private final BlogRepository blogRepository;
-    private static final Logger logger = LoggerFactory.getLogger(BlogServiceImpl.class);
 
     public BlogServiceImpl(BlogRepository blogRepository){
         this.blogRepository = blogRepository;
@@ -63,7 +60,6 @@ public class BlogServiceImpl implements BlogService {
         blog.setStatus(BlogsEnum.BLOG_DISABLE.name());
         blogRepository.save(blog);
     }
-
 
     //Actualizamos el contador de likes en el blog
     @Override

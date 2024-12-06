@@ -1,4 +1,4 @@
-package com.artbyte.blog.service.impl;
+package com.artbyte.blog.service;
 
 import com.artbyte.blog.model.User;
 
