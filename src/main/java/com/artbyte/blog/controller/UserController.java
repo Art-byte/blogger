@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -79,6 +80,18 @@ public class UserController {
         }
     }
 
+    @GetMapping("/users/roles")
+    public ResponseEntity<List<String>> getRoles(){
+        try{
+            List<String> rolesList = Arrays.asList("ADMIN", "WRITER");
+            return new ResponseEntity<>(rolesList, HttpStatus.OK);
+
+        }catch (Exception e){
+            logger.error("Error => {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/users/enabled/{id}")
     public ResponseEntity<Void> enabledUser(@PathVariable String id){
         try{
@@ -92,5 +105,4 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
