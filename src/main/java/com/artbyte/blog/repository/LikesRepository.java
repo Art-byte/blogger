@@ -8,9 +8,7 @@ import java.util.List;
 
 @Repository
 public interface LikesRepository extends MongoRepository<Likes, String> {
-    //Total de likes que tiene el blog
-    Long countByBlogId(String blogId);
 
     //Todos los id de usuario que dieron like al blog
-    List<String> findUserIdByBlogId(String blogId);
+    List<Likes> findUserIdByBlogId(String blogId);
 }

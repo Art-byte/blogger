@@ -5,6 +5,5 @@ import com.artbyte.blog.model.Likes;
 import java.util.List;
 
 public interface LikeService {
-    Long getTotalLikes(String blogId);
-    List<String> getAllUsersFromBlog(String blogId);
+    List<Likes> getAllUsersFromBlog(String blogId);
 }

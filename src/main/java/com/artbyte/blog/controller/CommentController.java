@@ -2,7 +2,7 @@ package com.artbyte.blog.controller;
 
 import com.artbyte.blog.exception.CommentException;
 import com.artbyte.blog.model.Comment;
-import com.artbyte.blog.service.impl.CommentService;
+import com.artbyte.blog.service.CommentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;

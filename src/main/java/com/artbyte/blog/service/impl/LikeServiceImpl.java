@@ -1,5 +1,6 @@
 package com.artbyte.blog.service.impl;
 
+import com.artbyte.blog.model.Likes;
 import com.artbyte.blog.repository.LikesRepository;
 import com.artbyte.blog.service.LikeService;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public Long getTotalLikes(String blogId) {
-        return likesRepository.countByBlogId(blogId);
-    }
-
-    @Override
-    public List<String> getAllUsersFromBlog(String blogId) {
+    public List<Likes> getAllUsersFromBlog(String blogId) {
         return likesRepository.findUserIdByBlogId(blogId);
     }
 }

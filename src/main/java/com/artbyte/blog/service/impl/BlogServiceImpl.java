@@ -25,6 +25,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<Blog> getAllBlogsFromUser(String authorId) {
+        return blogRepository.findAllByAuthorId(authorId);
+    }
+
+    @Override
     public Blog getBlogById(String id) {
         return blogRepository.findById(id)
                 .orElseThrow(() -> new BlogException("Blog not found"));
@@ -63,12 +68,12 @@ public class BlogServiceImpl implements BlogService {
 
     //Actualizamos el contador de likes en el blog
     @Override
-    public void addLike(String id, Long number) {
+    public void addLike(String id, int number) {
         Blog blog = getBlogById(id);
         Long actualLikes = blog.getLikes();
         if(number == 1){
             actualLikes = actualLikes + 1;
-        } else {
+        } else if(number == -1){
             actualLikes = actualLikes - 1;
         }
         blog.setLikes(actualLikes);
