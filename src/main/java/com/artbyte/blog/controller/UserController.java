@@ -38,6 +38,21 @@ public class UserController {
         }
     }
 
+    @GetMapping("/users/getUser/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable String id){
+        try{
+            User user = userService.findUserById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (UserException e){
+            logger.error("Error => {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (DataAccessException e){
+            logger.error("Error => {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/users")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         try {
@@ -47,9 +62,34 @@ public class UserController {
         } catch (UserException e) {
             logger.error("Error: {}", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e) {
-            logger.error("Unexpected error: {}", e.getMessage());
-            return new ResponseEntity<>("Unexpected error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/users/disabled/{id}")
+    public ResponseEntity<Void> disabledUser(@PathVariable String id){
+        try{
+            userService.disabledUser(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (UserException e){
+            logger.error("Error => {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (DataAccessException e){
+            logger.error("Error => {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/users/enabled/{id}")
+    public ResponseEntity<Void> enabledUser(@PathVariable String id){
+        try{
+            userService.enabledUser(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (UserException e){
+            logger.error("Error => {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (DataAccessException e){
+            logger.error("Error => {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -62,10 +62,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String id) {
+    public void disabledUser(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserException("User not found"));
         user.setStatus(StatusSystem.INACTIVE.name());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void enabledUser(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserException("User not found"));
+        user.setStatus(StatusSystem.ACTIVE.name());
         userRepository.save(user);
     }
 }

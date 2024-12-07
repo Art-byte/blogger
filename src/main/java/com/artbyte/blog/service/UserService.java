@@ -10,8 +10,6 @@ public interface UserService {
     User findUserByUsername(String username);
     User updateUser(String id, User user);
     void createUser(User user);
-    void deleteUser(String id);
-
-    interface BlogService {
-    }
+    void disabledUser(String id);
+    void enabledUser(String id);
 }
