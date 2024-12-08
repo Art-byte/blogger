@@ -61,8 +61,8 @@ public class BlogController {
         }
     }
 
-    @GetMapping("/users_likes")
-    public ResponseEntity<List<String>> getAllUsersLikedBlog(String blogId){
+    @GetMapping("/users_likes/{blogId}")
+    public ResponseEntity<List<String>> getAllUsersLikedBlog(@PathVariable String blogId){
         try{
             if(blogId == null || blogId.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
