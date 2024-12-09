@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/blog")
+@CrossOrigin("http://localhost:4200/")
+
 public class BlogController {
 
     private final BlogService blogService;
