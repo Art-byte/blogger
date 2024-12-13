@@ -1,5 +1,7 @@
 package com.artbyte.blog.controller;
 
+import com.artbyte.blog.mappers.Mappers;
+import com.artbyte.blog.mappers.vo.BlogMapper;
 import com.artbyte.blog.model.Blog;
 import com.artbyte.blog.model.Likes;
 import com.artbyte.blog.model.User;
@@ -26,23 +28,39 @@ public class BlogController {
     private final BlogService blogService;
     private final LikeService likeService;
     private final UserService userService;
+    private final Mappers mapperService;
 
     private static final Logger logger = LoggerFactory.getLogger(BlogController.class);
 
-    public BlogController(BlogService blogService, LikeService likeService, UserService userService) {
+    public BlogController(BlogService blogService, LikeService likeService, UserService userService, Mappers mapperService) {
         this.blogService = blogService;
         this.likeService = likeService;
         this.userService = userService;
+        this.mapperService = mapperService;
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Blog>> getAllBlogs(){
+    public ResponseEntity<List<BlogMapper>> getAllBlogs(){
         try{
             List<Blog> blogList = blogService.getAllBlogs();
             if(blogList.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(blogList, HttpStatus.OK);
+            List<BlogMapper> finalList = mapperService.convertBlogList(blogList);
+            return new ResponseEntity<>(finalList, HttpStatus.OK);
+        }catch (DataAccessException e){
+            logger.error("Error => {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @GetMapping("/blogSelect/{blogId}")
+    public ResponseEntity<BlogMapper> getBlogById(@PathVariable String blogId){
+        try{
+            Blog blog = blogService.getBlogById(blogId);
+            BlogMapper blogMapper = mapperService.convertBlogBody(blog);
+            return new ResponseEntity<>(blogMapper, HttpStatus.OK);
         }catch (DataAccessException e){
             logger.error("Error => {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,19 +68,21 @@ public class BlogController {
     }
 
     @GetMapping("/myBlogs/{authorId}")
-    public ResponseEntity<List<Blog>> getAllMyBLogs(@PathVariable String authorId){
+    public ResponseEntity<List<BlogMapper>> getAllMyBLogs(@PathVariable String authorId){
         try{
             List<Blog> blogList = blogService.getAllBlogsFromUser(authorId);
             if(blogList.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(blogList, HttpStatus.OK);
+            List<BlogMapper> finalList = mapperService.convertBlogList(blogList);
+            return new ResponseEntity<>(finalList, HttpStatus.OK);
         }catch (DataAccessException e){
             logger.error("Error => {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    //Esta es la miniatura con la que veremos solo el nombre de los usuarios que han dado like
     @GetMapping("/users_likes/{blogId}")
     public ResponseEntity<List<String>> getAllUsersLikedBlog(@PathVariable String blogId){
         try{
