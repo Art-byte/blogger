@@ -5,19 +5,17 @@ import com.artbyte.blog.exception.BlogException;
 import com.artbyte.blog.model.Blog;
 import com.artbyte.blog.repository.BlogRepository;
 import com.artbyte.blog.service.BlogService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BlogServiceImpl implements BlogService {
 
     private final BlogRepository blogRepository;
-
-    public BlogServiceImpl(BlogRepository blogRepository){
-        this.blogRepository = blogRepository;
-    }
 
     @Override
     public List<Blog> getAllBlogs() {

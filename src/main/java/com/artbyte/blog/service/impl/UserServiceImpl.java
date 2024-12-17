@@ -5,21 +5,22 @@ import com.artbyte.blog.exception.UserException;
 import com.artbyte.blog.model.User;
 import com.artbyte.blog.repository.UserRepository;
 import com.artbyte.blog.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
-    public UserServiceImpl(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
 
     @Override
     public List<User> getAllUsers() {
@@ -56,8 +57,18 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsByUsername(user.getUsername())){
             throw new UserException("This user already exists");
         }
-        user.setStatus(StatusSystem.ACTIVE.name());
-        userRepository.save(user);
+        User finalUser = User.builder()
+                .username(user.getUsername())
+                .password(passwordEncoder.encode(user.getPassword()))
+                .email(user.getEmail())
+                .name(user.getName())
+                .lastName(user.getLastName())
+                .roleId(user.getRoleId())
+                .status(user.getStatus())
+                .createAt(Instant.now())
+                .socialMedia(user.getSocialMedia())
+                .build();
+        userRepository.save(finalUser);
     }
 
     @Override

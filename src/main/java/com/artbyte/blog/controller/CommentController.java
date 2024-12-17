@@ -3,6 +3,7 @@ package com.artbyte.blog.controller;
 import com.artbyte.blog.exception.CommentException;
 import com.artbyte.blog.model.Comment;
 import com.artbyte.blog.service.CommentService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -14,15 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
-@CrossOrigin("http://localhost:4200/")
+@RequiredArgsConstructor
 public class CommentController {
 
     public final CommentService commentService;
     public static final Logger logger = LoggerFactory.getLogger(CommentController.class);
-
-    public CommentController(CommentService commentService){
-        this.commentService = commentService;
-    }
 
     @GetMapping("/{blogId}")
     public ResponseEntity<List<Comment>> getComments(@PathVariable String blogId){

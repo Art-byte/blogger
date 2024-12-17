@@ -19,13 +19,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200/")
 public class UserController {
 
     private final UserService userService;
     private final RoleRepository roleRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){

@@ -8,6 +8,7 @@ import com.artbyte.blog.model.User;
 import com.artbyte.blog.service.BlogService;
 import com.artbyte.blog.service.LikeService;
 import com.artbyte.blog.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -21,8 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/blog")
-@CrossOrigin("http://localhost:4200/")
-
+@RequiredArgsConstructor
 public class BlogController {
 
     private final BlogService blogService;
@@ -31,13 +31,6 @@ public class BlogController {
     private final Mappers mapperService;
 
     private static final Logger logger = LoggerFactory.getLogger(BlogController.class);
-
-    public BlogController(BlogService blogService, LikeService likeService, UserService userService, Mappers mapperService) {
-        this.blogService = blogService;
-        this.likeService = likeService;
-        this.userService = userService;
-        this.mapperService = mapperService;
-    }
 
     @GetMapping("/all")
     public ResponseEntity<List<BlogMapper>> getAllBlogs(){
