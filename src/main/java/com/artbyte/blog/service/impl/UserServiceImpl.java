@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
         userObj.setLastName(user.getLastName());
         userObj.setEmail(user.getEmail());
         userObj.setUsername(user.getUsername());
-        userObj.setStatus(user.getStatus());
         userObj.setSocialMedia(user.getSocialMedia());
         return userRepository.save(userObj);
     }

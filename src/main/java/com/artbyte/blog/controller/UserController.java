@@ -1,8 +1,11 @@
 package com.artbyte.blog.controller;
 
 import com.artbyte.blog.exception.UserException;
+import com.artbyte.blog.model.Role;
 import com.artbyte.blog.model.User;
+import com.artbyte.blog.repository.RoleRepository;
 import com.artbyte.blog.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -15,15 +18,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 @CrossOrigin("http://localhost:4200/")
 public class UserController {
 
     private final UserService userService;
+    private final RoleRepository roleRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){
@@ -82,9 +84,9 @@ public class UserController {
     }
 
     @GetMapping("/users/roles")
-    public ResponseEntity<List<String>> getRoles(){
+    public ResponseEntity<List<Role>> getRoles(){
         try{
-            List<String> rolesList = Arrays.asList("ADMIN", "WRITER");
+            List<Role> rolesList = roleRepository.findAll();
             return new ResponseEntity<>(rolesList, HttpStatus.OK);
 
         }catch (Exception e){
