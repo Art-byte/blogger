@@ -20,12 +20,12 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
-    private UserService userService;
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findUserByUsername(username);
+        User user = userRepository.findByUsername(username).orElse(null);
         if(user == null){
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -34,7 +34,6 @@ public class CustomUserDetailService implements UserDetailsService {
         if(role == null){
             throw new RoleException("Role not found");
         }
-
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),

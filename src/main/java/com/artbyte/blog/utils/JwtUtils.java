@@ -12,7 +12,6 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
-@RequiredArgsConstructor
 public class JwtUtils {
 
     private static final String secretKey = "zdhrS$RGBsea4YHEZ5se45THy5s$";
@@ -25,6 +24,14 @@ public class JwtUtils {
                 .signWith(SignatureAlgorithm.HS256, generateJwtSecretKey());
         return jwt.compact();
     }
+
+    public SecretKey generateJwtSecretKey(){
+        byte[] keyBytes = secretKey.getBytes();
+        byte[] keyBytesPadded = new byte[32];
+        System.arraycopy(keyBytes, 0, keyBytesPadded, 0, Math.min(keyBytes.length, 32));
+        return Keys.hmacShaKeyFor(keyBytesPadded);
+    }
+
 
     public boolean validateToken(String token, String username){
         return (username.equals(getUsername(token)) && !isTokenExpired(token));
@@ -46,11 +53,5 @@ public class JwtUtils {
                 .getPayload();
     }
 
-    public SecretKey generateJwtSecretKey(){
-        byte[] keyBytes = secretKey.getBytes();
-        byte[] keyBytesPadded = new byte[32];
-        System.arraycopy(keyBytes, 0, keyBytesPadded, 0, Math.min(keyBytes.length, 32));
-        return Keys.hmacShaKeyFor(keyBytesPadded);
-    }
 
 }

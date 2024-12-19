@@ -8,23 +8,19 @@ import com.artbyte.blog.model.User;
 import com.artbyte.blog.service.BlogService;
 import com.artbyte.blog.service.CommentService;
 import com.artbyte.blog.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class Mappers {
 
     private final BlogService blogService;
     private final CommentService commentService;
     private final UserService userService;
-
-    public Mappers(BlogService blogService, CommentService commentService, UserService userService) {
-        this.blogService = blogService;
-        this.commentService = commentService;
-        this.userService = userService;
-    }
 
     public List<BlogMapper> convertBlogList(List<Blog> blogList){
         List<BlogMapper> finalList = new ArrayList<>();
