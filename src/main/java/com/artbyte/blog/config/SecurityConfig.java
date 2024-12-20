@@ -32,6 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())  // Desactiva CSRF ya que se usará JWT
+                .cors(cors -> corsFilter())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)  // Añade el filtro JWT antes del filtro de autenticación
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/authenticate").permitAll()  // Permite acceso sin autenticación a estas rutas
@@ -46,12 +47,11 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Configuración de CORS
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");  // Permite todas las solicitudes de cualquier origen
+        config.addAllowedOrigin("http://localhost:4200");  // Permite todas las solicitudes de cualquier origen
         config.addAllowedHeader("*");  // Permite todos los encabezados
         config.addAllowedMethod("*");  // Permite todos los métodos HTTP
         source.registerCorsConfiguration("/**", config);  // Aplica la configuración CORS a todas las rutas
