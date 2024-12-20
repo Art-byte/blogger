@@ -29,7 +29,7 @@ public class AuthController {
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password()));
             final UserDetails userDetails = userDetailService.loadUserByUsername(authRequest.username());
-            String jwt = jwtUtils.generateToken(userDetails.getUsername());
+            String jwt = jwtUtils.generateToken(userDetails);
             return ResponseEntity.ok(new AuthResponse(jwt, null));
 
         }catch (Exception e){
