@@ -25,6 +25,7 @@ public class User {
     private String name;
     private String lastName;
     private String roleId;
+    private String aboutMe;
     private String status;
     private Instant createAt;
     private List<String> socialMedia;

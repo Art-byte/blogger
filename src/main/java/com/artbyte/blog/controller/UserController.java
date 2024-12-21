@@ -3,6 +3,7 @@ package com.artbyte.blog.controller;
 import com.artbyte.blog.exception.UserException;
 import com.artbyte.blog.model.Role;
 import com.artbyte.blog.model.User;
+import com.artbyte.blog.record.UserProfile;
 import com.artbyte.blog.repository.RoleRepository;
 import com.artbyte.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable String id){
         try{
             User user = userService.findUserById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
 
         } catch (UserException e){
             logger.error("Error => {}", e.getMessage());
@@ -56,10 +57,17 @@ public class UserController {
     }
 
     @GetMapping("/users/getUsername/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username){
+    public ResponseEntity<UserProfile> getUserByUsername(@PathVariable String username){
         try{
             User user = userService.findUserByUsername(username);
-            return new ResponseEntity<>(HttpStatus.OK);
+            UserProfile userProfile = new UserProfile(
+                    user.getUsername(),
+                    user.getName(),
+                    user.getLastName(),
+                    user.getSocialMedia(),
+                    user.getAboutMe()
+            );
+            return new ResponseEntity<>(userProfile, HttpStatus.OK);
 
         } catch (UserException e){
             logger.error("Error => {}", e.getMessage());
