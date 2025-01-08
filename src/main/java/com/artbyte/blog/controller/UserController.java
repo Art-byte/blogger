@@ -14,8 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -34,11 +34,22 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             logger.info("User list => {}", userList);
-            return new ResponseEntity<>(userList, HttpStatus.OK);
+            return new ResponseEntity<>(formatUser(userList), HttpStatus.OK);
         } catch (DataAccessException e) {
             logger.error("Error connecting to the database => {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private List<User> formatUser(List<User> userList) {
+        Set<String> roleIds = userList.stream()
+                .map(User::getRoleId)
+                .collect(Collectors.toSet());
+        Map<String, String> rolesMap = roleRepository.findAllById(roleIds).stream()
+                .collect(Collectors.toMap(Role::getId, Role::getName));
+        return userList.stream()
+                .peek(user -> user.setRoleId(rolesMap.get(user.getRoleId())))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/users/getUser/{id}")
